@@ -1,0 +1,131 @@
+<html>
+    <head>
+        <title>Covid-19 Tracker</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+    <body>
+        <center><h2>Covid-19 Tracker</h2></center>
+        <div>
+        <form>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Enter country:</label> &nbsp;
+            <input type="text" id="cname" placeholder="Enter country....">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Enter start date:</label>&nbsp;
+            <input type="date" id="sdate" placeholder="Start date..">
+            
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label>Enter end date:</label>&nbsp;
+            <input type="date" id="edate" placeholder="End date.."> 
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <button class="btn btn-success" onClick="showData()">Submit</button>
+        </form>
+
+        <div id="res">
+            <h4>Confirmed Cases:<span id="confirmed"></span> </h4>
+            <h4>Active Cases: <span id="active"></span></h4>
+            <h4>Death Cases: <span id="deaths"></span> </h4>
+        </div>
+    </div>
+        <script src="./js/script.js"></script>
+<style>
+input[type=text] {
+  
+  padding: 2px 8px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  border: 1px solid red;
+  border-radius: 4px;
+}
+input[type=date] {
+  
+  padding: 2px 8px;
+  margin: 4px 0;
+  box-sizing: border-box;
+  border: 1px solid red;
+  border-radius: 4px;
+}
+label {
+  color: white;
+  padding: 8px;
+  font-family: Arial;
+}
+body
+{
+    background-image: url(covid.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+h2
+{
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+label
+{
+    font-size: 20px;
+    font-weight: bold;
+}
+#res
+{
+    background-color: white;
+    display: none;
+    width: 100%;
+}
+</style>
+<script>
+function showData()
+{
+    event.preventDefault();
+    var country=document.getElementById("cname").value;
+    var sDate=document.getElementById("sdate").value;
+    var eDate=document.getElementById("edate").value;
+
+    var confirmed=document.getElementById("confirmed");
+    var active=document.getElementById("active");
+    var deaths=document.getElementById("deaths");
+
+    console.log(sDate);
+
+    if(country=='' || sDate=='' || eDate=='')
+    alert("enter the required field");
+
+    else
+    {
+        var url="https://api.covid19api.com/country/"+country+"?from="+sDate+"T00:00:00Z&to="+eDate+"T00:00:00Z";
+
+        fetch(url)
+        .then((res) => res.json())
+        .then((res) => {
+            console.log(res);
+            var length=res.length;
+            var index=length-1;
+
+            var c=res[index].Confirmed;
+            var a=res[index].Active;
+            var d=res[index].Deaths;
+
+            confirmed.innerHTML=c;
+            active.innerHTML=a;
+            deaths.innerHTML=d;
+
+            document.getElementById("res").style.display="block";
+            
+        })
+    }
+}
+</script>
+</body>
+</html>
+
+
+
